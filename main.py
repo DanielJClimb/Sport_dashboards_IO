@@ -159,11 +159,7 @@ def shot_pitch(ax, player):
     return
 
 
-    else:
-        player_br[['x', 'y']] = player_br['location'].apply(pd.Series)
-        # drawing ball recoveries location
-        pitch.scatter(player_br.x, player_br.y, color='red', s=200, marker="o", ax=ax, zorder=2, label="Ball Recovery")
-        return fig
+
 
 
 # function for dispossessed visualization (for now not used)
@@ -187,7 +183,7 @@ def prepare_figure(player, position):
     plt.subplots_adjust(left=0.0, bottom=0.1, right=1.0, top=0.9, wspace=0.1, hspace=0.1)
 
     fig.set_facecolor('white')
-    fig.suptitle(f'{player} statistics')
+    fig.suptitle(f'{player} game performance')
 
     if position == 'Goalkeeper':
         pass_pitch(axs[0], player)
@@ -202,6 +198,49 @@ def prepare_figure(player, position):
 
     return fig
 
+def creating_stat_table(player, position):
+    # success rate of passes
+    player_passes = event['pass_outcome'][(event.player == player) & (event.type == "Pass") & (event.pass_outcome != 'Unknown')]
+    passes = str(round((1 - (player_passes.count()/len(player_passes)) )* 100,2)) + '%'
+    # number of succesful ball recoveries
+    player_r = event[(event.player == player) & (event.type == "Ball Recovery")]
+    rec = player_r['ball_recovery_recovery_failure'].isna().count()
+    if position == 'Goalkeeper':
+        # number of shots saved and parried to opponent
+        saved_op = len(event[(event.player == player) & (event.type == "Goal Keeper") & (event.goalkeeper_type == "Shot Saved")& (event.goalkeeper_outcome == 'In Play Danger')])
+        # number of shots saved and parried to a teammate
+        saved_t = len(event[(event.player == player) & (event.type == "Goal Keeper") & (event.goalkeeper_type == "Shot Saved")& (event.goalkeeper_outcome == 'In Play Safe')])
+        # number of goals conceded
+        conceded = len(event[(event.player == player) & (event.type == "Goal Keeper") & (event.goalkeeper_type == "Goal Conceded")])
+        # number of succesful punches
+        punches = len(event[(event.player == player) & (event.type == "Goal Keeper") & (event.goalkeeper_type == "Punches")& (event.goalkeeper_outcome == 'Sucess')])
+        names = ['success rate of passes', 'succesfull ball recoveries','shots saved and parried to opponent',
+                 'saved and parried to a teammate','goals conceded','succesful punches']
+        stats = [passes, rec, saved_op, saved_t, conceded, punches]
+    else:
+        # number of shots on target
+        player_s = event[(event.player == player) & (event.type == "Shot")]
+        shots = len(player_s[(player_s.shot_outcome == 'Saved') | (player_s.shot_outcome == 'Goal') | (player_s.shot_outcome == 'Saved To Post')])
+        # number of won duels
+        player_r = event[(event.player == player) & (event.type == "Duel")]
+        duels = len(player_r[(player_r.duel_outcome == 'Won') |(player_r.duel_outcome == 'Success In Play')|
+                             (player_r.duel_outcome == 'Success')|(player_r.duel_outcome == 'Success Out')|
+                             (player_r.duel_outcome == 'Success To Team') | (player_r.duel_outcome == 'Aerial Success')])
+        # number of succesfull dribligns
+        player_dr = event[(event.player == player) & (event.type == "Dribble")]
+        drib = len(player_dr[(player_dr.dribble_outcome == 'Complete')])
+        # number of ball losses
+        los = len(event[(event.player == player) & (event.type == "Dispossessed")])
+        # number of fauls commited
+        fc = len(event[(event.player == player) & (event.type == "Foul Commited")])
+        # number of fouls suffered
+        fw = len(event[(event.player == player) & (event.type == "Foul Won")])
+        names = ['success rate of passes', 'succesfull ball recoveries','shots on target','won duels',
+                 'succesfull dribblings', 'ball losses', 'fouls commited', 'fouls won']
+        
+        stats = [passes, rec, shots, duels, drib, los, fc, fw]
+    df =pd.DataFrame(list(zip(names, stats)), columns = ['Parameter', 'Value'])
+    return df
 
 #defining position (goalkeeper or other position)
 position = "?"
@@ -209,7 +248,11 @@ chosen_player = st.selectbox("Players:", players)  # players selectbox
 player_position_list = event[(event.player == chosen_player)]['position'].unique()
 if len(player_position_list) == 1:
     position = player_position_list[0]
+    
 
+st.header(f'{chosen_player} statistics')
+stats = creating_stat_table(chosen_player, position)
+st.write(stats.transpose().style.set_properties(**{'background-color' : 'lightblue'}))
 st.pyplot(prepare_figure(chosen_player, position))
 
 # print(event)
