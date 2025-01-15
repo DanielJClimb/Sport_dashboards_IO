@@ -22,19 +22,6 @@ event = sb.events(match_id=selected_game_id)  # geting event from specific game
 players = list(event.player.unique())  # list of players for selectbox
 players = [p for p in players if p == p]  # removing nan values
 
-# function for dispossessed and duels visualization (dispossessed)
-def dispossessed_pitch(ax, player):
-    player_d = event[(event.player == player) & (event.type == "Dispossessed")]
-    # creating pitch
-    pitch = Pitch(pitch_type='statsbomb', pitch_color='white', line_zorder=2, line_color='black', linewidth=1)
-    pitch.draw(ax=ax, figsize=(16, 11))
-    ax_title = ax.set_title('Dispossessed', fontsize=8)
-    if len(player_d) > 0:
-        player_d[['x', 'y']] = player_d['location'].apply(pd.Series)
-        # drawing ball dispossessed location
-        pitch.scatter(player_d.x, player_d.y, color='red', s=7, marker="o", ax=ax, zorder=2, label="Dispossessed")
-
-    return
 
 # function for disspossed and duels visualization (duels)
 def duel_pitch(ax, player):
@@ -47,25 +34,26 @@ def duel_pitch(ax, player):
     if len(duels) > 0:
         duels[['x', 'y']] = duels['location'].apply(pd.Series)
         # drawing duel locations
-        pitch.scatter(duels.x, duels.y, color='red', s=7, marker="o", ax=ax, zorder=2, label="Duel")
         duels_won = duels[(duels.duel_outcome == "Success In Play") | (duels.duel_outcome == "Won")
                           | (duels.duel_outcome == "Success") | (duels.duel_outcome == "Success Out")
                           | (duels.duel_outcome == "Success To Team") | (duels.duel_outcome == "Aerial Success")]
         duels_lost = duels[(duels.duel_outcome == "Lost In Play") | (duels.duel_outcome == "Lost")
                            | (duels.duel_outcome == "Lost Out") | (duels.duel_outcome == "Aerial Lost")]
+        duels_lost_dispossessed = pd.concat([duels_lost, dispossessed], ignore_index=True, sort=False)
 
         if len(duels_won) > 0:
             duels_won[['x', 'y']] = duels_won['location'].apply(pd.Series)
-            pitch.scatter(duels_won.x, duels_won.y, color='green', s=7, marker="o", ax=ax, zorder=2,
-                          label="Duel won")
-        if len(duels_lost) > 0:
-            duels_lost[['x', 'y']] = duels_lost['location'].apply(pd.Series)
-            pitch.scatter(duels_lost.x, duels_lost.y, color='red', s=7, marker="o", ax=ax, zorder=2,
-                          label="Duel lost")
-        if len(dispossessed) > 0:
-            dispossessed[['x', 'y']] = dispossessed['location'].apply(pd.Series)
-            pitch.scatter(dispossessed.x, dispossessed.y, color='red', s=7, marker="o", ax=ax, zorder=2,
-                          label="Dispossessed")
+            pitch.scatter(duels_won.x, duels_won.y, color='green', s=7, marker="o", ax=ax,
+                          zorder=2, label="Duel won")
+        if len(duels_lost_dispossessed) > 0:
+            duels_lost_dispossessed[['x', 'y']] = duels_lost_dispossessed['location'].apply(pd.Series)
+            pitch.scatter(duels_lost_dispossessed.x, duels_lost_dispossessed.y, color='red', s=7, marker="o", ax=ax,
+                          zorder=2, label="Duel lost or dispossessed")
+        # if len(dispossessed) > 0:
+        #     dispossessed[['x', 'y']] = dispossessed['location'].apply(pd.Series)
+        #     pitch.scatter(dispossessed.x, dispossessed.y, color='red', s=7, marker="o", ax=ax, zorder=2)
+
+    ax.legend(loc='lower center', ncol=3, fontsize=7, bbox_to_anchor=(0.5, -0.05))
 
     return
 
@@ -81,23 +69,24 @@ def pass_pitch(ax, player):
         passes[['x', 'y']] = passes['location'].apply(pd.Series)
         passes[['pass_end_x', 'pass_end_y']] = passes['pass_end_location'].apply(pd.Series)
 
+        passes_bad = passes[passes.pass_outcome.notna()]
         passes_good = passes[passes.pass_outcome.isna()]
         passes_assist = passes[passes.pass_goal_assist == True]
 
         # drawing passes
-        pitch.arrows(passes.x, passes.y, passes.pass_end_x, passes.pass_end_y,
-                     width=1, headwidth=4, headlength=3, color='red', ax=ax, zorder=2, label="Pass")
+        pitch.arrows(passes_bad.x, passes_bad.y, passes_bad.pass_end_x, passes_bad.pass_end_y,
+                     width=1, headwidth=4, headlength=3, color='red', ax=ax, zorder=2, label="Wrong pass")
         # drawing good passes
         pitch.arrows(passes_good.x, passes_good.y, passes_good.pass_end_x, passes_good.pass_end_y,
-                     width=1, headwidth=4, headlength=3, color='black', ax=ax, zorder=2, label="Pass")
+                     width=1, headwidth=4, headlength=3, color='black', ax=ax, zorder=2, label="Good pass")
         # drawing assist passes
         pitch.arrows(passes_assist.x, passes_assist.y, passes_assist.pass_end_x, passes_assist.pass_end_y,
                      width=1.5, headwidth=4, headlength=3, color='green', ax=ax, zorder=2, label="Assist")
 
-    ax.legend(labelspacing=1)
-    plt.legend(loc='lower center', ncol=3, fontsize=7, bbox_to_anchor=(0.5, -0.05))
+    ax.legend(loc='lower center', ncol=3, fontsize=7, bbox_to_anchor=(0.5, -0.05))
 
     return
+
 
 # function for recovery visualization
 def recovery_pitch(ax, player):
@@ -122,10 +111,10 @@ def recovery_pitch(ax, player):
             pitch.scatter(recoveries_lost.x, recoveries_lost.y, color='green', s=7, marker="o", ax=ax, zorder=2,
                           label="Recovery failed")
 
-    ax.legend(labelspacing=1)
-    plt.legend(loc='lower center', ncol=2, fontsize=7, bbox_to_anchor=(0.5, -0.05))
+    ax.legend(loc='lower center', ncol=2, fontsize=7, bbox_to_anchor=(0.5, -0.05))
 
     return
+
 
 # function for shot visualization
 def shot_pitch(ax, player):
@@ -153,13 +142,9 @@ def shot_pitch(ax, player):
             pitch.arrows(shots_goal.x, shots_goal.y, shots_goal.shot_end_x, shots_goal.shot_end_y,
                          width=1, headwidth=4, headlength=3, color='green', ax=ax, zorder=2, label="Goal")
 
-    ax.legend(labelspacing=1)
-    plt.legend(loc='lower center', ncol=3, fontsize=7, bbox_to_anchor=(0.5, -0.05))
+    ax.legend(loc='lower center', ncol=3, fontsize=7, bbox_to_anchor=(0.5, -0.05))
 
     return
-
-
-
 
 
 # function for dispossessed visualization (for now not used)
@@ -177,7 +162,7 @@ def prepare_figure(player, position):
     else:
         fig, axs = plt.subplots(2, 2)
 
-    fig.set_size_inches(7,7)
+    fig.set_size_inches(7, 7)
 
     fig.tight_layout(h_pad=2, w_pad=0)
     plt.subplots_adjust(left=0.0, bottom=0.1, right=1.0, top=0.9, wspace=0.1, hspace=0.1)
@@ -191,41 +176,48 @@ def prepare_figure(player, position):
     else:
         pass_pitch(axs[0, 0], player)
         recovery_pitch(axs[0, 1], player)
-        # dispossessed_pitch(axs[1, 0], player)
         duel_pitch(axs[1, 0], player)
         shot_pitch(axs[1, 1], player)
         # empty_pitch(axs[2, 1])
 
     return fig
 
+
 def creating_stat_table(player, position):
     # success rate of passes
-    player_passes = event['pass_outcome'][(event.player == player) & (event.type == "Pass") & (event.pass_outcome != 'Unknown')]
-    passes = str(round((1 - (player_passes.count()/len(player_passes)) )* 100,2)) + '%'
+    player_passes = event['pass_outcome'][
+        (event.player == player) & (event.type == "Pass") & (event.pass_outcome != 'Unknown')]
+    passes = str(round((1 - (player_passes.count() / len(player_passes))) * 100, 2)) + '%'
     # number of succesful ball recoveries
     player_r = event[(event.player == player) & (event.type == "Ball Recovery")]
     rec = player_r['ball_recovery_recovery_failure'].isna().count()
     if position == 'Goalkeeper':
         # number of shots saved and parried to opponent
-        saved_op = len(event[(event.player == player) & (event.type == "Goal Keeper") & (event.goalkeeper_type == "Shot Saved")& (event.goalkeeper_outcome == 'In Play Danger')])
+        saved_op = len(event[(event.player == player) & (event.type == "Goal Keeper") & (
+                    event.goalkeeper_type == "Shot Saved") & (event.goalkeeper_outcome == 'In Play Danger')])
         # number of shots saved and parried to a teammate
-        saved_t = len(event[(event.player == player) & (event.type == "Goal Keeper") & (event.goalkeeper_type == "Shot Saved")& (event.goalkeeper_outcome == 'In Play Safe')])
+        saved_t = len(event[(event.player == player) & (event.type == "Goal Keeper") & (
+                    event.goalkeeper_type == "Shot Saved") & (event.goalkeeper_outcome == 'In Play Safe')])
         # number of goals conceded
-        conceded = len(event[(event.player == player) & (event.type == "Goal Keeper") & (event.goalkeeper_type == "Goal Conceded")])
+        conceded = len(event[(event.player == player) & (event.type == "Goal Keeper") & (
+                    event.goalkeeper_type == "Goal Conceded")])
         # number of succesful punches
-        punches = len(event[(event.player == player) & (event.type == "Goal Keeper") & (event.goalkeeper_type == "Punches")& (event.goalkeeper_outcome == 'Sucess')])
-        names = ['success rate of passes', 'succesfull ball recoveries','shots saved and parried to opponent',
-                 'saved and parried to a teammate','goals conceded','succesful punches']
+        punches = len(event[(event.player == player) & (event.type == "Goal Keeper") & (
+                    event.goalkeeper_type == "Punches") & (event.goalkeeper_outcome == 'Sucess')])
+        names = ['success rate of passes', 'succesfull ball recoveries', 'shots saved and parried to opponent',
+                 'saved and parried to a teammate', 'goals conceded', 'succesful punches']
         stats = [passes, rec, saved_op, saved_t, conceded, punches]
     else:
         # number of shots on target
         player_s = event[(event.player == player) & (event.type == "Shot")]
-        shots = len(player_s[(player_s.shot_outcome == 'Saved') | (player_s.shot_outcome == 'Goal') | (player_s.shot_outcome == 'Saved To Post')])
+        shots = len(player_s[(player_s.shot_outcome == 'Saved') | (player_s.shot_outcome == 'Goal') | (
+                    player_s.shot_outcome == 'Saved To Post')])
         # number of won duels
         player_r = event[(event.player == player) & (event.type == "Duel")]
-        duels = len(player_r[(player_r.duel_outcome == 'Won') |(player_r.duel_outcome == 'Success In Play')|
-                             (player_r.duel_outcome == 'Success')|(player_r.duel_outcome == 'Success Out')|
-                             (player_r.duel_outcome == 'Success To Team') | (player_r.duel_outcome == 'Aerial Success')])
+        duels = len(player_r[(player_r.duel_outcome == 'Won') | (player_r.duel_outcome == 'Success In Play') |
+                             (player_r.duel_outcome == 'Success') | (player_r.duel_outcome == 'Success Out') |
+                             (player_r.duel_outcome == 'Success To Team') | (
+                                         player_r.duel_outcome == 'Aerial Success')])
         # number of succesfull dribligns
         player_dr = event[(event.player == player) & (event.type == "Dribble")]
         drib = len(player_dr[(player_dr.dribble_outcome == 'Complete')])
@@ -235,24 +227,22 @@ def creating_stat_table(player, position):
         fc = len(event[(event.player == player) & (event.type == "Foul Commited")])
         # number of fouls suffered
         fw = len(event[(event.player == player) & (event.type == "Foul Won")])
-        names = ['success rate of passes', 'succesfull ball recoveries','shots on target','won duels',
+        names = ['success rate of passes', 'succesfull ball recoveries', 'shots on target', 'won duels',
                  'succesfull dribblings', 'ball losses', 'fouls commited', 'fouls won']
-        
+
         stats = [passes, rec, shots, duels, drib, los, fc, fw]
-    df =pd.DataFrame(list(zip(names, stats)), columns = ['Parameter', 'Value'])
+    df = pd.DataFrame(list(zip(names, stats)), columns=['Parameter', 'Value'])
     return df
 
-#defining position (goalkeeper or other position)
+
+# defining position (goalkeeper or other position)
 position = "?"
-chosen_player = st.selectbox("Players:", players)  # players selectbox
+chosen_player = st.selectbox("Player:", players)  # players selectbox
 player_position_list = event[(event.player == chosen_player)]['position'].unique()
 if len(player_position_list) == 1:
     position = player_position_list[0]
-    
 
 st.header(f'{chosen_player} statistics')
 stats = creating_stat_table(chosen_player, position)
-st.write(stats.transpose().style.set_properties(**{'background-color' : 'lightblue'}))
+st.write(stats.transpose().style.set_properties(**{'background-color': 'lightblue'}))
 st.pyplot(prepare_figure(chosen_player, position))
-
-# print(event)
