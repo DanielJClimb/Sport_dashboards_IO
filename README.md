@@ -3,7 +3,7 @@ Description: the application is designed to allow the creation of quick visualiz
 
 # 3. Requirements specification
 / Id / Name / Short description / Priority [1 - required, 2 - needed, 3 - optional] / Functional category /
-/ :--: /
+/ :--: / :--: / :--: / :--: / :--: / 
 / A1 / API Connections / Downloading data for selected player and match using the API from Statsbomb website / 1 / functional /
 / A2 / Selection of players and matches / Possible option to select the match and player for which the application should prepare a report / 1 / functional /
 / A3 / Visualizations of field players performance / Creating a visualization showing maps of passes, ball recoveries, duels and shots  of a given player during a match / 1 / functional / 
@@ -18,7 +18,7 @@ Description: the application is designed to allow the creation of quick visualiz
 ## 4.1 Development architecture
 
 / Id / Tool / Purpose / Version /
-/ :--: /
+/ :--: / :--: / :--: / :--: / 
 / T1 / Python / Programmin langueage / 3.9 / 
 / T2 / Spyder / Development environment / 5.0 /
 / T3 / pandas / Data analyses tool / 2.1.1 / 
@@ -31,7 +31,7 @@ Description: the application is designed to allow the creation of quick visualiz
 ## 4.2 Runtime architecture
 
 / Id / Tool / Purpose /
-/ :--: /
+/ :--: / :--: / :--: / 
 / R1 / Internet connection / Provide connection to api services for data extraction / 
 Due to teh creation of thi exe file users do not have to install python or development enviroment
 
