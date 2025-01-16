@@ -4,7 +4,9 @@ from mplsoccer import Pitch
 import matplotlib.pyplot as plt
 import streamlit as st
 from PIL import Image
+from matplotlib.backends.backend_pdf import PdfPages
 
+st.write ("data provided by")
 logofile = 'hudlstatsbomblogo.jpg' #setting required statsbomb logo 
 st.image(logofile)
 
@@ -208,9 +210,10 @@ def creating_stat_table(player, position):
         # number of succesful punches
         punches = len(event[(event.player == player) & (event.type == "Goal Keeper") & (
                     event.goalkeeper_type == "Punches") & (event.goalkeeper_outcome == 'Sucess')])
-        names = ['success rate of passes', 'succesfull ball recoveries', 'shots saved and parried to opponent',
-                 'saved and parried to a teammate', 'goals conceded', 'succesful punches']
-        stats = [passes, rec, saved_op, saved_t, conceded, punches]
+        names1 = ['success rate of passes', 'succesfull ball recoveries', 'shots saved and parried to opponent']
+        stats1 = [passes, rec, saved_op]
+        names2 = ['shots saved and parried to a teammate', 'goals conceded', 'succesful punches']
+        stats2 = [ saved_t, conceded, punches]
     else:
         # number of shots on target
         player_s = event[(event.player == player) & (event.type == "Shot")]
@@ -231,12 +234,14 @@ def creating_stat_table(player, position):
         fc = len(event[(event.player == player) & (event.type == "Foul Commited")])
         # number of fouls suffered
         fw = len(event[(event.player == player) & (event.type == "Foul Won")])
-        names = ['success rate of passes', 'succesfull ball recoveries', 'shots on target', 'won duels',
-                 'succesfull dribblings', 'ball losses', 'fouls commited', 'fouls won']
+        names1 = ['success rate of passes', 'succesfull ball recoveries', 'shots on target', 'won duels']
+        names2 = ['succesfull dribblings', 'ball losses', 'fouls commited', 'fouls won']
 
-        stats = [passes, rec, shots, duels, drib, los, fc, fw]
-    df = pd.DataFrame(list(zip(names, stats)), columns=['Parameter', 'Value'])
-    return df
+        stats1 = [passes, rec, shots, duels]
+        stats2 = [ drib, los, fc, fw]
+    df1 = pd.DataFrame(list(zip(names1, stats1)), columns=['Parameter', 'Value'])
+    df2 = pd.DataFrame(list(zip(names2, stats2)), columns=['Parameter', 'Value'])
+    return df1, df2
 
 
 # defining position (goalkeeper or other position)
@@ -248,5 +253,50 @@ if len(player_position_list) == 1:
 
 st.header(f'{chosen_player} statistics')
 stats = creating_stat_table(chosen_player, position)
-st.write(stats.transpose().style.set_properties(**{'background-color': 'lightblue'}))
+df1 = stats[0].transpose()
+df2 = stats[1].transpose()
+st.table(df1.style.set_properties(**{'background-color': 'lightblue'}))
+st.table(df2.style.set_properties(**{'background-color': 'lightblue'}))
 st.pyplot(prepare_figure(chosen_player, position))
+
+# creating button with on click
+def drawBtn():
+    st.button("Print to pdf", on_click= creating_pdf, use_container_width=True, type = 'primary')
+   
+# creating pdf with report
+def creating_pdf():
+    with PdfPages(f'{chosen_player} report.pdf') as pdf:
+        fig, (ax1, ax2) = plt.subplots(2,1,figsize=(8,3))
+        
+        ax1.axis('off')
+        ax2.axis('off')
+        
+    
+        df1 = stats[0].transpose()
+        df2 = stats[1].transpose()
+        
+        
+        table1 = ax1.table(cellText = df1.values,
+                          colLabels = df1.columns,
+                          cellColours = [['lightblue']*len(df1.columns),
+                                         ['lightblue']*len(df1.columns)],
+                          loc = 'center')
+    
+        
+        table2 = ax2.table(cellText = df2.values,
+                          colLabels = df2.columns,
+                          cellColours = [['lightblue']*len(df1.columns),
+                                         ['lightblue']*len(df1.columns)],
+                          loc = 'center')
+        
+        
+        fig.suptitle("Player statistics")
+        pdf.savefig()
+        
+        fig1 =  prepare_figure(chosen_player, position)
+        fig1.show()
+        
+        pdf.savefig()
+        
+        
+drawBtn()
