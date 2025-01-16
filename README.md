@@ -33,7 +33,7 @@ Description: the application is designed to allow the creation of quick visualiz
 | Id | Tool | Purpose |
 | :--: | :--: | :--: | 
 | R1 | Internet connection | Provide connection to api services for data extraction | 
-Due to teh creation of thi exe file users do not have to install python or development enviroment
+Due to the creation of the exe file users do not have to install python or development enviroment
 
 
 
