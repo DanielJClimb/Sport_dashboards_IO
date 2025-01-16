@@ -3,6 +3,10 @@ from statsbombpy import sb
 from mplsoccer import Pitch
 import matplotlib.pyplot as plt
 import streamlit as st
+from PIL import Image
+
+logofile = 'hudlstatsbomblogo.jpg' #setting required statsbomb logo 
+st.image(logofile)
 
 competitions = sb.competitions()  # getting data of all available competitions
 
