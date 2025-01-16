@@ -2,7 +2,7 @@
 Description: the application is designed to allow the creation of quick visualizations and summaries of the game of selected players. Based on the data downloaded using the API, graphics will be used to create a short report of player’s performance during the game.
 
 # 3. Requirements specification
-|Id | Name | Short description | Priority [1 - required, 2 - needed, 3 - optional] |Functional category |
+/ Id / Name / Short description / Priority [1 - required, 2 - needed, 3 - optional] / Functional category /
 | :--: |
 | A1 | API Connections | Downloading data for selected player and match using the API from Statsbomb website | 1 | functional |
 | A2 | Selection of players and matches | Possible option to select the match and player for which the application should prepare a report | 1 | functional |
