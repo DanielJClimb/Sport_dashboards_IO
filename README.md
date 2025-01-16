@@ -33,16 +33,18 @@ Description: the application is designed to allow the creation of quick visualiz
 | Id | Tool | Purpose |
 | :--: | :--: | :--: | 
 | R1 | Internet connection | Provide connection to api services for data extraction | 
-Due to the creation of the exe file users do not have to install python or development enviroment.
-Path to exe file: dist -> opening_streamlit -> opening_streamlit.exe
+| R2 | Programming language | Downloading and installing Python version 3.9 for running script |
+| R3 | Spyder | Downloading and installing Spyder version 5.0 and selecting python intepreter for running script | 
+| R4 | Libraries | Installing libraries mentioned in point 4.1 for script to run | 
+| R5 | Script for opening app | Opening app by running opening_streamlit.py script in development environment | 
 
 
 # 5. Tests
 ## 5.1 Tests scenarios
 | Id | Aspect | Scenario | 
 | :--: | :--: | :--: | 
-| Test1 | Opening app using exe file | Try opening application by running exe file |
-| Test2 | Checking the need for an internet connection | openning app without internet connection |
+| Test1 | Opening app using spyder environment | Try opening application by running opening_streamlit.py script in Spyder  |
+| Test2 | Checking the need for an internet connection | Openning app without internet connection |
 | Test3 | Changing the match | Select different match from options to check if it offers choice of different players | 
 | Test4 | Changing the player | Select different player from provided options | 
 | Test5 | Different plots and statistics for goalkeepers | Veryfing if app show different aspects of performance for goalkeepers and players from the field | 
@@ -51,7 +53,7 @@ Path to exe file: dist -> opening_streamlit -> opening_streamlit.exe
 ## 5.2 Tests results 
 | Id | Result |
 | :--: | :--: |
-| Test1 | App opens after few seconds |
+| Test1 | App opens after few seconds only if opening_streamlit.py and main.py scripts are in the same location |
 | Test2 | Error requests.exceptions.ConnectionError appears, which means internet connection is required for app to work |
 | Test3 | After selecting another match app automatically provides report for player from selected game | 
 | Test4 | After selecting another player app automatically provides report for this player |
