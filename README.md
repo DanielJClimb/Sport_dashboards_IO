@@ -14,14 +14,15 @@ License: GNU GENERAL PUBLIC LICENSE, Version 2
 | Id | Name | Short description | Priority | Functional category |
 | :--: | :--: | :--: | :--: | :--: | 
 | A1 | API Connections | Downloading data for selected player and match using the API from Statsbomb website | Required | functional |
-| A2 | Selection of players and matches | Possible option to select the match and player for which the application should prepare a report | Required | functional |
-| A3 | Visualizations of field players performance | Creating a visualization showing maps of passes, ball recoveries, duels and shots of a given player during a match | Required | functional | 
-| A4 | Visualizations of goalkeepers performance| Creating a visualization showing maps of passes and ball recoveries of a given goalkeeper during a match | Required | functional |
-| A5 | Table with statistics | Creating a table showing basic and specific statistics for selected player | Needed | functional |
-| A6 | Non-failure | The app is creating report and visualisations with no failures and inform about any inconvenience | Needed | non- functional |
-| A7 | Ease of use | Creating proper interface easy to understand for every user and with short wait time (maximum 3 minutes) | Needed | non - functional |
-| A8 | Interface color | Creating proper interface color of dashboard | Optional | non - functional |
-| A9 | Plot and statistics export | The app allows user to export report for each player in PDF format | Optional | functional | 
+| A2 | Functioning buttons | Created buttons run for specific purposes without issues | Required | functional |
+| A3 | Selection of players and matches | Possible option to select the match and player for which the application should prepare a report | Required | functional |
+| A4 | Visualizations of field players performance | Creating a visualization showing maps of passes, ball recoveries, duels and shots of a given player during a match | Required | functional | 
+| A5 | Visualizations of goalkeepers performance| Creating a visualization showing maps of passes and ball recoveries of a given goalkeeper during a match | Required | functional |
+| A6 | Table with statistics | Creating a table showing basic and specific statistics for selected player | Needed | functional |
+| A7 | Non-failure | The app is creating report and visualisations with no failures and inform about any inconvenience | Needed | non- functional |
+| A8 | Ease of use | Creating proper interface easy to understand for every user and with short wait time (maximum 3 minutes) | Needed | non - functional |
+| A9 | Interface color | Creating proper interface color of dashboard | Optional | non - functional |
+| A10 | Plot and statistics export | The app allows user to export report for each player in PDF format | Optional | functional | 
 <br>
 
 ## 4. Architecture
@@ -53,17 +54,19 @@ License: GNU GENERAL PUBLIC LICENSE, Version 2
 | :--: | :--: | :--: | 
 | Test1 | Opening app using spyder environment | Try opening application by running opening_streamlit.py script in Spyder  |
 | Test2 | Checking the need for an internet connection | Openning app without internet connection |
-| Test3 | Changing the match | Select different match from options to check if it offers choice of different players | 
-| Test4 | Changing the player | Select different player from provided options | 
-| Test5 | Different plots and statistics for goalkeepers | Veryfing if app show different aspects of performance for goalkeepers and players from the field | 
-| Test6 | Printing report to pdf file | Using button to download palyer repport to pdf file | 
+| Test3 | Changing tabs | Using button “Click to start” to move from the titlepage to main tab | 
+| Test4 | Changing the match | Select different match from options to check if it offers choice of different players | 
+| Test5 | Changing the player | Select different player from provided options | 
+| Test6 | Different plots and statistics for goalkeepers | Veryfing if app show different aspects of performance for goalkeepers and players from the field | 
+| Test7 | Printing report to pdf file | Using button to download palyer repport to pdf file | 
 
 ### 5.2 Tests results 
 | Id | Result |
 | :--: | :--: |
-| Test1 | App opens after few seconds only if opening_streamlit.py and main.py scripts are in the same location |
+| Test1 | App opens after few seconds only if opening_streamlit.py and titlepage.py scripts are in the same location |
 | Test2 | Error requests.exceptions.ConnectionError appears, which means internet connection is required for app to work |
-| Test3 | After selecting another match app automatically provides report for player from selected game | 
-| Test4 | After selecting another player app automatically provides report for this player |
-| Test5 | After selecting goalkeepr different statistics were provided | 
-| Test6 | After clicking button pdf file with report for selected player is downloaded to app location | 
+| Test3 | After clicking the “Click to start” button, the titlepage tab is changed to main tab after a short while | 
+| Test4 | After selecting another match app automatically provides report for player from selected game | 
+| Test5 | After selecting another player app automatically provides report for this player |
+| Test6 | After selecting goalkeepr different statistics were provided | 
+| Test7 | After clicking button pdf file with report for selected player is downloaded to app location | 
