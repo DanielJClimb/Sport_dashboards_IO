@@ -1,7 +1,7 @@
 
 import streamlit as st
 
-col1, col2, col3 = st.columns([1, 5, 1], border=False)
+col1, col2, col3 = st.columns([1, 5, 1])
 
 with col1:
     st.write(' ')
