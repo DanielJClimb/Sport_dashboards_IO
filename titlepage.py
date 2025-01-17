@@ -13,7 +13,6 @@ with col2:
     st.markdown('<div style="text=align: right;">', unsafe_allow_html=True)
     if st.button("Click to start", use_container_width=True,  type='primary'):
         st.switch_page("pages\\main.py")
-        # st.switch_page("pages\\scratch_89.py")
     st.markdown('</div>', unsafe_allow_html=True)
 with col3:
     st.write(' ')
