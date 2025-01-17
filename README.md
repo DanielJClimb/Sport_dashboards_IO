@@ -7,7 +7,7 @@ Short description: This application is designed to allow the creation of quick v
 
 ## 2. Copyrights
 Authors: Daniel Jarzymowski, Jakub Lewandowski \
-License: 
+License: GNU GENERAL PUBLIC LICENSE, Version 2 (???)
 <br>
 
 ## 3. Requirements specification
