@@ -7,9 +7,9 @@ with col1:
     st.write(' ')
 with col2:
     st.header('SCOS', divider=True)
-    st.write('SCOS, which stands for Scrutiny of Sport, is an application that aims to allow the user to view player statistics and visualizations after each match. '
-             'Based on data downloaded via an API from the Statsbomb website, after selecting a player and a specific match, a short report of performance will appear, which then can be downloaded in PDF format.'
-             'We hope you find our app useful! ')
+    st.write('SCOS, which stands for Scrutiny of Sport, is an application that aims to allow to view player statistics and visualizations after each match.')
+    st.write('Based on data downloaded via an API from the Statsbomb website, after selecting a player and a specific match, a short report of performance will appear, which then can be downloaded in PDF format.')
+    st.write('We hope you find our app useful! ')
     st.markdown('<div style="text=align: right;">', unsafe_allow_html=True)
     if st.button("Click to start", use_container_width=True,  type='primary'):
 
