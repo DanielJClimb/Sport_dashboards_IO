@@ -1,13 +1,16 @@
-# 1. Software characteristics
-Short name: SCOS
-Full name: Scrunity of Sport
+# Documentation
+
+## 1. Software characteristics
+Short name: **SCOS** \
+Full name: **Scrunity of Sport** <br><br>
 Short description: This application is designed to allow the creation of quick visualizations and summaries of the game of selected players. Based on the data downloaded using the API, graphics will be used to create a short report of player’s performance during the game, which can be later downloaded in PDF format.
 
-# 2. Copyrights
-Authors: Daniel Jarzymowski, Jakub Lewandowski
-License:
+## 2. Copyrights
+Authors: Daniel Jarzymowski, Jakub Lewandowski \
+License: 
+<br>
 
-# 3. Requirements specification
+## 3. Requirements specification
 | Id | Name | Short description | Priority | Functional category |
 | :--: | :--: | :--: | :--: | :--: | 
 | A1 | API Connections | Downloading data for selected player and match using the API from Statsbomb website | Required | functional |
@@ -18,11 +21,11 @@ License:
 | A6 | Non-failure | The app is creating report and visualisations with no failures and inform about any inconvenience | Needed | non- functional |
 | A7 | Ease of use | Creating proper interface easy to understand for every user and with short wait time (maximum 3 minutes) | Needed | non - functional |
 | A8 | Interface color | Creating proper interface color of dashboard | Optional | non - functional |
-| A9 | Plot and statistics export | The app allows user to export report for each player in PDF format | Optional | functional |
+| A9 | Plot and statistics export | The app allows user to export report for each player in PDF format | Optional | functional | 
+<br>
 
-
-# 4. Architecture
-## 4.1 Development architecture
+## 4. Architecture
+### 4.1 Development architecture
 | Id | Tool | Purpose | Version |
 | :--: | :--: | :--: | :--: | 
 | T1 | Python | Programming language | 3.9 | 
@@ -34,7 +37,7 @@ License:
 | T7 | streamlit | Creating graphical interface | 1.40.2 |
 | T8 | os | creating script for openning application | 3.9 | 
 
-## 4.2 Runtime architecture
+### 4.2 Runtime architecture
 | Id | Tool | Purpose |
 | :--: | :--: | :--: | 
 | R1 | Internet connection | Provide connection to api services for data extraction | 
@@ -42,10 +45,10 @@ License:
 | R3 | Spyder | Downloading and installing Spyder version 5.0 and selecting python intepreter for running script | 
 | R4 | Libraries | Installing libraries mentioned in point 4.1 for script to run | 
 | R5 | Script for opening app | Opening app by running opening_streamlit.py script in development environment | 
+<br>
 
-
-# 5. Tests
-## 5.1 Tests scenarios
+## 5. Tests
+### 5.1 Tests scenarios
 | Id | Aspect | Scenario | 
 | :--: | :--: | :--: | 
 | Test1 | Opening app using spyder environment | Try opening application by running opening_streamlit.py script in Spyder  |
@@ -55,7 +58,7 @@ License:
 | Test5 | Different plots and statistics for goalkeepers | Veryfing if app show different aspects of performance for goalkeepers and players from the field | 
 | Test6 | Printing report to pdf file | Using button to download palyer repport to pdf file | 
 
-## 5.2 Tests results 
+### 5.2 Tests results 
 | Id | Result |
 | :--: | :--: |
 | Test1 | App opens after few seconds only if opening_streamlit.py and main.py scripts are in the same location |
