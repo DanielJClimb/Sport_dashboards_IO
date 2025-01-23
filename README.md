@@ -2,7 +2,7 @@
 
 ## 1. Software characteristics
 Short name: **SCOS** \
-Full name: **Scrunity of Sport** <br><br>
+Full name: **Scrutiny of Sport** <br><br>
 Short description: This application is designed to allow the creation of quick visualizations and summaries of the game of selected players. Based on the data downloaded using the API, graphics will be used to create a short report of player’s performance during the game, which can be later downloaded in PDF format.
 
 ## 2. Copyrights
