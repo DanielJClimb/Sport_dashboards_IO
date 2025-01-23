@@ -57,7 +57,7 @@ License: GNU GENERAL PUBLIC LICENSE, Version 2
 | Test3 | Changing tabs | Using button “Click to start” to move from the titlepage to main tab | 
 | Test4 | Changing the match | Select different match from options to check if it offers choice of different players | 
 | Test5 | Changing the player | Select different player from provided options | 
-| Test6 | Different plots and statistics for goalkeepers | Veryfing if app show different aspects of performance for goalkeepers and players from the field | 
+| Test6 | Different plots and statistics for goalkeepers | Veryfing if app shows different aspects of performance for goalkeepers and players from the field | 
 | Test7 | Printing report to pdf file | Using button to download palyer repport to pdf file | 
 
 ### 5.2 Tests results 
