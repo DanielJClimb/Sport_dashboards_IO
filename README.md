@@ -36,7 +36,7 @@ License: GNU GENERAL PUBLIC LICENSE, Version 2
 | T5 | mplsoccer | Pitch visualizations | 1.4.0 |
 | T6 | matplotlib | Visualizations tool | 3.8.0 |
 | T7 | streamlit | Creating graphical interface | 1.40.2 |
-| T8 | os | creating script for openning application | 3.9 | 
+| T8 | os, subprocess, sys, socket | creating script for openning application | 3.9 | 
 
 ### 4.2 Runtime architecture
 | Id | Tool | Purpose |
